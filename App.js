@@ -5,6 +5,7 @@ import DeckListView from './components/DeckListView'
 import AddDeck from './components/AddDeck'
 import Constants from 'expo-constants'
 import {MaterialCommunityIcons, AntDesign} from '@expo/vector-icons'
+import DeckQuizView from './components/DeckQuizView'
 
 
 const CardsStatusBar = ({backgroundColor, ...props}) => {
@@ -34,11 +35,13 @@ const Tabs = createBottomTabNavigator({
 
 const MainNavigator = createStackNavigator({
   Home: {
-    title: 'home',
     screen: Tabs,
     navigationOptions: {
       header: null
     }
+  },
+  DeckQuizView: {
+    screen: DeckQuizView
   }
 })
 

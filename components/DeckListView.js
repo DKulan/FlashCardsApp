@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, StyleSheet, AsyncStorage, FlatList} from 'react-native'
+import {View, Text, StyleSheet, AsyncStorage, FlatList, TouchableOpacity} from 'react-native'
 import DeckView from './DeckView'
 
 
@@ -42,6 +42,12 @@ class DeckListView extends React.Component {
     AsyncStorage.setItem(`${deckTitleText}`, JSON.stringify(newDeckObj))
   }
 
+  handleDeckSelect = (item) => {
+    this.props.navigation.navigate('DeckQuizView', {
+      item
+    })
+  }
+
   render() {
     const {decks} = this.state
 
@@ -57,7 +63,16 @@ class DeckListView extends React.Component {
       <FlatList
         data={this.state.decks}
         keyExtractor={(item, index) => Object.keys(item)[0]}
-        renderItem={({item}) => <DeckView deckTitle={Object.keys(item)[0]}/>}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity onPress={() => this.handleDeckSelect(item)}>
+              <DeckView
+                deckTitle={Object.keys(item)[0]}
+                numOfQuestions={Object.values(item)[0].questions.length}
+              />
+            </TouchableOpacity>
+          )
+        }}
       />
     )
   }
