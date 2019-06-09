@@ -5,24 +5,47 @@ import DeckView from './DeckView'
 
 class DeckListView extends React.Component {
   state = {
-    cards: null
+    decks: []
   }
 
-  componentDidMount = async () => {
-    
+  componentDidMount() {
+    AsyncStorage.getAllKeys((err, keys) => {
+      AsyncStorage.multiGet(keys, (err, stores) => {
+        stores.map((result, i, store) => {
+          this.setState((prevState) => ({
+            decks: prevState.decks.concat(JSON.parse(store[i][1]))
+          }))
+        })
+      })
+    })
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {params} = nextProps.navigation.state
 
-  renderItem = ({item}) => (
-    <DeckView
-      key={item.cardTitleText}
-    />
-  )
+    if (params) {
+      this.addNewCard(params.deckTitleText)
+    }
+  }
+
+  addNewCard = (deckTitleText) => {
+    const newDeckObj = {
+      [deckTitleText]: {
+        questions: []
+      }
+    }
+
+    this.setState((prevState) => ({
+      decks: prevState.decks.concat(newDeckObj)
+    }))
+
+    AsyncStorage.setItem(`${deckTitleText}`, JSON.stringify(newDeckObj))
+  }
 
   render() {
-    const {cards} = this.state
+    const {decks} = this.state
 
-    if (!cards) {
+    if (decks.length === 0) {
       return (
         <View style={styles.notFound}>
           <Text style={{fontSize: 30}}>No decks found</Text>
@@ -32,8 +55,9 @@ class DeckListView extends React.Component {
 
     return (
       <FlatList
-        data={this.state.cards}
-        renderItem={this.renderItem}
+        data={this.state.decks}
+        keyExtractor={(item, index) => Object.keys(item)[0]}
+        renderItem={({item}) => <DeckView deckTitle={Object.keys(item)[0]}/>}
       />
     )
   }

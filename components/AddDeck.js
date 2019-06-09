@@ -3,18 +3,14 @@ import {Text, TextInput, StyleSheet, KeyboardAvoidingView, AsyncStorage} from 'r
 
 
 class AddDeck extends React.Component {
-  state = {
-    cardTitleText: ''
-  }
-
   onSubmit = async () => {
-    const {cardTitleText} = this.state
+    const deckTitleText = this.textInput._lastNativeText
 
-    const value = await AsyncStorage.getItem(`${cardTitleText}`)
+    const value = await AsyncStorage.getItem(`${deckTitleText}`)
 
-    if (value === null) {
+    if (!value) {
       this.props.navigation.navigate('DeckListView', {
-        cardTitleText
+        deckTitleText: deckTitleText
       })
     }
   }
@@ -26,7 +22,7 @@ class AddDeck extends React.Component {
         <TextInput
           style={{borderWidth: 1, paddingLeft: 30, paddingRight: 30, marginTop: 30}}
           placeholder='Type a new title for the deck'
-          onChangeText={(text) => this.setState(() => ({cardTitleText: text}))}
+          ref={input => this.textInput = input}
           onSubmitEditing={this.onSubmit}
         />
       </KeyboardAvoidingView>

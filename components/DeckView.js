@@ -5,7 +5,7 @@ import {Text} from 'react-native'
 class DeckView extends React.Component {
   render() {
     return (
-      <Text>hello</Text>
+      <Text>{this.props.deckTitle}</Text>
     )
   }
 }
