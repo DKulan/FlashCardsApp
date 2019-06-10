@@ -6,6 +6,7 @@ import AddDeck from './components/AddDeck'
 import Constants from 'expo-constants'
 import {MaterialCommunityIcons, AntDesign} from '@expo/vector-icons'
 import DeckQuizView from './components/DeckQuizView'
+import AddCard from './components/AddCard'
 
 
 const CardsStatusBar = ({backgroundColor, ...props}) => {
@@ -42,6 +43,12 @@ const MainNavigator = createStackNavigator({
   },
   DeckQuizView: {
     screen: DeckQuizView
+  },
+  AddCard: {
+    screen: AddCard,
+    navigationOptions: {
+      title: 'Add New Card'
+    }
   }
 })
 
