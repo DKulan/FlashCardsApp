@@ -4,9 +4,9 @@ import {Button} from 'react-native-elements'
 import {connect} from 'react-redux'
 
 
-class DeckQuiz extends React.Component {
+class DeckMenu extends React.Component {
   static navigationOptions = ({navigation}) => ({
-    title: navigation.getParam('title')
+    title: `${navigation.getParam('title')} Deck`
   })
 
   componentWillReceiveProps(nextProps) {
@@ -22,7 +22,12 @@ class DeckQuiz extends React.Component {
   }
 
   handleStart = () => {
+    const {navigation, numOfCards} = this.props
 
+    this.props.navigation.navigate('Quiz', {
+      title: navigation.getParam('title'),
+      numOfCards
+    })
   }
 
   render() {
@@ -36,10 +41,18 @@ class DeckQuiz extends React.Component {
           <Text style={{fontSize: 20, color: 'gray'}}>{numOfCards} cards</Text>
         </View>
         <TouchableOpacity style={styles.addBtn}>
-          <Button title='Add Card' type='outline' onPress={this.handleAddCard}/>
+          <Button
+            title='Add Card'
+            type='outline'
+            onPress={this.handleAddCard}
+          />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.startBtn} onPress={this.handleStart}>
-          <Button title='Start Quiz'/>
+        <TouchableOpacity style={styles.startBtn}>
+          <Button
+            title='Start Quiz'
+            disabled={numOfCards === 0 ? true : false}
+            onPress={this.handleStart}
+          />
         </TouchableOpacity>
       </View>
     )
@@ -64,4 +77,4 @@ const mapStateToProps = (state, {navigation}) => ({
   numOfCards: state[navigation.getParam('title')].questions.length
 })
 
-export default connect(mapStateToProps)(DeckQuiz)
+export default connect(mapStateToProps)(DeckMenu)

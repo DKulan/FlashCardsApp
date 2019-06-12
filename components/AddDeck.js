@@ -9,14 +9,18 @@ class AddDeck extends React.Component {
     const {dispatch, navigation} = this.props
     const title = this.textInput._lastNativeText
 
-    dispatch(addDeck({
-      [title]: {
-        title,
-        questions: []
-      }
-    }))
+    if (title !== undefined && title.trim() !== '') {
+      dispatch(addDeck({
+        [title]: {
+          title,
+          questions: []
+        }
+      }))
 
-    navigation.navigate('DeckList')
+      navigation.navigate('DeckList')
+    } else {
+      alert('Please enter a deck name')
+    }
   }
 
   render() {

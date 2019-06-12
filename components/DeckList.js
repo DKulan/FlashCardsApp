@@ -15,8 +15,9 @@ class DeckList extends React.Component {
   }
 
   handleDeckSelect = (item) => {
-    this.props.navigation.navigate('DeckQuiz', {
+    this.props.navigation.navigate('DeckMenu', {
       title: item[0],
+      numOfCards: item[1].questions.length,
       handleDeckLoad: this.handleDeckLoad
     })
   }

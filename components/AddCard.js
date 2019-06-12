@@ -12,9 +12,13 @@ class AddCard extends React.Component {
     const question = this.questionInput.input._lastNativeText
     const answer = this.answerInput.input._lastNativeText
 
-    dispatch(addCard(title, question, answer))
+    if (question !== undefined && answer !== undefined && question.trim() !== '' && answer.trim() !== '') {
+      dispatch(addCard(title, question, answer))
 
-    this.props.navigation.navigate('DeckQuiz')
+      this.props.navigation.navigate('DeckMenu')
+    } else {
+      alert('Question or answer cannot be empty!')
+    }
   }
 
   render() {
