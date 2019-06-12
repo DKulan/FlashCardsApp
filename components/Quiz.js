@@ -2,10 +2,13 @@ import React from 'react'
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native'
 import FlipCard from 'react-native-flip-card'
 import {Button} from 'react-native-elements'
+import {connect} from 'react-redux'
 
 
 class Quiz extends React.Component {
   state = {
+    currentQuestionIndex: 0,
+    score: 0,
     flip: false
   }
 
@@ -19,33 +22,71 @@ class Quiz extends React.Component {
     }))
   }
 
-  renderFlipped = () => (
-    <View style={styles.container}>
-      <Text style={styles.contentText}>Answer</Text>
-      <TouchableOpacity>
-        <Button
-          title='Correct'
-          buttonStyle={styles.correctBtn}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Button
-          title='Incorrect'
-          buttonStyle={styles.incorrectBtn}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.questionBtn}>
-        <Button
-          style={styles.questionBtn}
-          title='View Question'
-          type='outline'
-          onPress={this.handleFlip}
-        />
-      </TouchableOpacity>
-    </View>
-  )
+  handleCorrect = () => {
+    const {questions} = this.props
+    const {currentQuestionIndex} = this.state
+
+    if (currentQuestionIndex + 1 < questions.length) {
+      this.setState((prevState) => ({
+        currentQuestionIndex: prevState.currentQuestionIndex + 1,
+        score: prevState.score + 1
+      }))
+    }
+
+    // else navigate to the summary page
+  }
+
+  handleIncorrect = () => {
+    const {questions} = this.props
+    const {currentQuestionIndex} = this.state
+
+    if (currentQuestionIndex + 1 < questions.length) {
+      this.setState((prevState) => ({
+        currentQuestionIndex: prevState.currentQuestionIndex + 1
+      }))
+    }
+
+    // else navigate to the summary page
+  }
+
+  renderFlipped = () => {
+    const {questions} = this.props
+    const {currentQuestionIndex} = this.state
+
+    return (
+      <View style={styles.container}>
+        <Text>{`${currentQuestionIndex + 1}/${questions.length}`}</Text>
+        <Text style={styles.contentText}>{questions[currentQuestionIndex].answer}</Text>
+        <TouchableOpacity>
+          <Button
+            title='Correct'
+            buttonStyle={styles.correctBtn}
+            onPress={this.handleCorrect}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Button
+            title='Incorrect'
+            buttonStyle={styles.incorrectBtn}
+            onPress={this.handleIncorrect}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.questionBtn}>
+          <Button
+            style={styles.questionBtn}
+            title='View Question'
+            type='outline'
+            onPress={this.handleFlip}
+          />
+        </TouchableOpacity>
+      </View>
+    )
+  }
 
   render() {
+    const {questions} = this.props
+    const {currentQuestionIndex} = this.state
+
     return (
       <FlipCard
         flip={this.state.flip}
@@ -54,17 +95,20 @@ class Quiz extends React.Component {
         flipVertical={false}
       >
         <View style={styles.container}>
-          <Text style={styles.contentText}>Question</Text>
+          <Text>{`${currentQuestionIndex + 1}/${questions.length}`}</Text>
+          <Text style={styles.contentText}>{questions[currentQuestionIndex].question}</Text>
           <TouchableOpacity>
             <Button
               title='Correct'
               buttonStyle={styles.correctBtn}
+              onPress={this.handleCorrect}
             />
           </TouchableOpacity>
           <TouchableOpacity>
             <Button
               title='Incorrect'
               buttonStyle={styles.incorrectBtn}
+              onPress={this.handleIncorrect}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.answerBtn}>
@@ -89,7 +133,8 @@ const styles = StyleSheet.create({
   },
   contentText: {
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 20,
+    fontWeight: 'bold',
     marginBottom: 100
   },
   correctBtn: {
@@ -109,4 +154,8 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Quiz
+const mapStateToProps = (state, {navigation}) => ({
+  questions: state[navigation.getParam('title')].questions
+})
+
+export default connect(mapStateToProps)(Quiz)

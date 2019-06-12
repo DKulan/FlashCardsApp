@@ -22,11 +22,10 @@ class DeckMenu extends React.Component {
   }
 
   handleStart = () => {
-    const {navigation, numOfCards} = this.props
+    const {navigation} = this.props
 
     this.props.navigation.navigate('Quiz', {
-      title: navigation.getParam('title'),
-      numOfCards
+      title: navigation.getParam('title')
     })
   }
 
