@@ -1,5 +1,6 @@
 import React from 'react'
-import {Text, TextInput, StyleSheet, KeyboardAvoidingView, AsyncStorage} from 'react-native'
+import {Text, StyleSheet, KeyboardAvoidingView} from 'react-native'
+import {Input} from 'react-native-elements'
 import {connect} from 'react-redux'
 import {addDeck} from '../actions'
 
@@ -26,9 +27,9 @@ class AddDeck extends React.Component {
   render() {
     return (
       <KeyboardAvoidingView style={styles.addDeck} behavior="padding" enabled>
-        <Text style={{fontSize: 30}}>Create New Deck</Text>
-        <TextInput
-          style={{borderWidth: 1, paddingLeft: 30, paddingRight: 30, marginTop: 30}}
+        <Text style={{fontSize: 30, marginBottom: 75}}>Create New Deck</Text>
+        <Input
+          containerStyle={{width: 250}}
           placeholder='Type a new title for the deck'
           ref={input => this.textInput = input}
           onSubmitEditing={this.onSubmit}
@@ -41,8 +42,8 @@ class AddDeck extends React.Component {
 const styles = StyleSheet.create({
   addDeck: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
 

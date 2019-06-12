@@ -13,6 +13,7 @@ import AddCard from './components/AddCard'
 import DeckList from './components/DeckList'
 import DeckMenu from './components/DeckMenu'
 import Quiz from './components/Quiz'
+import QuizSummary from './components/QuizSummary'
 
 
 const CardsStatusBar = ({backgroundColor, ...props}) => {
@@ -58,6 +59,12 @@ const MainNavigator = createStackNavigator({
   },
   Quiz: {
     screen: Quiz
+  },
+  QuizSummary: {
+    screen: QuizSummary,
+    navigationOptions: {
+      header: null
+    }
   }
 })
 

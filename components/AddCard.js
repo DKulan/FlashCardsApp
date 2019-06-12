@@ -1,6 +1,6 @@
 import React from 'react'
 import {View, StyleSheet, KeyboardAvoidingView} from 'react-native'
-import {Button, Input} from 'react-native-elements'
+import {Input} from 'react-native-elements'
 import {addCard} from '../actions'
 import {connect} from 'react-redux'
 
@@ -26,16 +26,16 @@ class AddCard extends React.Component {
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <View style={{marginBottom: 50}}>
           <Input
-            placeholder='Question'
+            containerStyle={{marginBottom: 40}}
+            placeholder='Enter the new question'
             ref={input => this.questionInput = input}
+            onSubmitEditing={this.handleSubmit}
           />
           <Input
-            placeholder='Answer'
+            placeholder='Enter the answer for the question'
             ref={input => this.answerInput = input}
+            onSubmitEditing={this.handleSubmit}
           />
-        </View>
-        <View style={{alignItems: 'center'}}>
-          <Button title='Submit' onPress={this.handleSubmit}/>
         </View>
       </KeyboardAvoidingView>
     )

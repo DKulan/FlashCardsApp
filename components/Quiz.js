@@ -23,30 +23,36 @@ class Quiz extends React.Component {
   }
 
   handleCorrect = () => {
-    const {questions} = this.props
-    const {currentQuestionIndex} = this.state
+    const {questions, navigation} = this.props
+    const {currentQuestionIndex, score} = this.state
 
     if (currentQuestionIndex + 1 < questions.length) {
       this.setState((prevState) => ({
         currentQuestionIndex: prevState.currentQuestionIndex + 1,
         score: prevState.score + 1
       }))
+    } else {
+      navigation.replace('QuizSummary', {
+        score: Math.floor(((score + 1)/questions.length)*100),
+        title: navigation.getParam('title')
+      })
     }
-
-    // else navigate to the summary page
   }
 
   handleIncorrect = () => {
-    const {questions} = this.props
-    const {currentQuestionIndex} = this.state
+    const {questions, navigation} = this.props
+    const {currentQuestionIndex, score} = this.state
 
     if (currentQuestionIndex + 1 < questions.length) {
       this.setState((prevState) => ({
         currentQuestionIndex: prevState.currentQuestionIndex + 1
       }))
+    } else {
+      navigation.replace('QuizSummary', {
+        score: Math.floor((score/questions.length)*100),
+        title: navigation.getParam('title')
+      })
     }
-
-    // else navigate to the summary page
   }
 
   renderFlipped = () => {
@@ -71,13 +77,11 @@ class Quiz extends React.Component {
             onPress={this.handleIncorrect}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.questionBtn}>
-          <Button
+        <TouchableOpacity>
+          <Text
             style={styles.questionBtn}
-            title='View Question'
-            type='outline'
             onPress={this.handleFlip}
-          />
+          >View Question</Text>
         </TouchableOpacity>
       </View>
     )
@@ -111,12 +115,11 @@ class Quiz extends React.Component {
               onPress={this.handleIncorrect}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.answerBtn}>
-            <Button
-              title='View Answer'
-              type='outline'
+          <TouchableOpacity>
+            <Text
+              style={styles.answerBtn}
               onPress={this.handleFlip}
-            />
+            >View Answer</Text>
           </TouchableOpacity>
         </View>
         {this.renderFlipped()}
@@ -147,10 +150,12 @@ const styles = StyleSheet.create({
     width: 100
   },
   questionBtn: {
-    marginTop: 100
+    color: 'red',
+    marginTop: 50
   },
   answerBtn: {
-    marginTop: 100
+    color: 'red',
+    marginTop: 50
   }
 })
 
