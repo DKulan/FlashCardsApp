@@ -1,18 +1,22 @@
 import React from 'react'
 import {Text, TextInput, StyleSheet, KeyboardAvoidingView, AsyncStorage} from 'react-native'
+import {connect} from 'react-redux'
+import {addDeck} from '../actions'
 
 
 class AddDeck extends React.Component {
-  onSubmit = async () => {
-    const deckTitleText = this.textInput._lastNativeText
+  onSubmit = () => {
+    const {dispatch, navigation} = this.props
+    const title = this.textInput._lastNativeText
 
-    const value = await AsyncStorage.getItem(`${deckTitleText}`)
+    dispatch(addDeck({
+      [title]: {
+        title,
+        questions: []
+      }
+    }))
 
-    if (!value) {
-      this.props.navigation.navigate('DeckListView', {
-        deckTitleText: deckTitleText
-      })
-    }
+    navigation.navigate('DeckList')
   }
 
   render() {
@@ -38,4 +42,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AddDeck
+export default connect()(AddDeck)

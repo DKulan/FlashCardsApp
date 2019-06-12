@@ -1,16 +1,20 @@
 import React from 'react'
 import {View, StyleSheet, KeyboardAvoidingView} from 'react-native'
 import {Button, Input} from 'react-native-elements'
+import {addCard} from '../actions'
+import {connect} from 'react-redux'
 
 
 class AddCard extends React.Component {
   handleSubmit = () => {
+    const {navigation, dispatch} = this.props
+    const title = navigation.getParam('title')
     const question = this.questionInput.input._lastNativeText
     const answer = this.answerInput.input._lastNativeText
-    this.props.navigation.navigate('DeckQuizView', {
-      question,
-      answer
-    })
+
+    dispatch(addCard(title, question, answer))
+
+    this.props.navigation.navigate('DeckQuiz')
   }
 
   render() {
@@ -41,4 +45,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AddCard
+export default connect()(AddCard)

@@ -1,12 +1,17 @@
 import React from 'react';
-import {StyleSheet, Text, View, StatusBar} from 'react-native';
-import {createBottomTabNavigator, createAppContainer, createStackNavigator} from 'react-navigation'
-import DeckListView from './components/DeckListView'
-import AddDeck from './components/AddDeck'
+import {StyleSheet, View, StatusBar} from 'react-native';
+import {createStore, applyMiddleware} from 'redux'
+import {Provider} from 'react-redux'
+import decks from './reducers'
+import {logger} from './middleware'
+import thunk from 'redux-thunk'
 import Constants from 'expo-constants'
+import {createBottomTabNavigator, createStackNavigator, createAppContainer} from 'react-navigation'
 import {MaterialCommunityIcons, AntDesign} from '@expo/vector-icons'
-import DeckQuizView from './components/DeckQuizView'
+import AddDeck from './components/AddDeck'
 import AddCard from './components/AddCard'
+import DeckList from './components/DeckList'
+import DeckQuiz from './components/DeckQuiz'
 
 
 const CardsStatusBar = ({backgroundColor, ...props}) => {
@@ -18,8 +23,8 @@ const CardsStatusBar = ({backgroundColor, ...props}) => {
 }
 
 const Tabs = createBottomTabNavigator({
-  DeckListView: {
-    screen: DeckListView,
+  DeckList: {
+    screen: DeckList,
     navigationOptions: {
       tabBarLabel: 'Decks',
       tabBarIcon: ({tintColor}) => <MaterialCommunityIcons name='cards-outline' color={tintColor}/>
@@ -41,8 +46,8 @@ const MainNavigator = createStackNavigator({
       header: null
     }
   },
-  DeckQuizView: {
-    screen: DeckQuizView
+  DeckQuiz: {
+    screen: DeckQuiz
   },
   AddCard: {
     screen: AddCard,
@@ -54,12 +59,16 @@ const MainNavigator = createStackNavigator({
 
 const AppContainer = createAppContainer(MainNavigator)
 
+const store = createStore(decks, applyMiddleware(thunk, logger))
+
 const App = () => {
   return (
-    <View style={styles}>
-      <CardsStatusBar barStyle='light-content' />
-      <AppContainer/>
-    </View>
+    <Provider store={store}>
+      <View style={styles}>
+        <CardsStatusBar barStyle='light-content'/>
+        <AppContainer/>
+      </View>
+    </Provider>
   );
 }
 

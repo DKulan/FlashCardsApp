@@ -2,14 +2,14 @@ import React from 'react'
 import {Text, StyleSheet, View} from 'react-native'
 
 
-class DeckView extends React.Component {
+class Deck extends React.Component {
   render() {
-    const {deckTitle, numOfQuestions} = this.props
+    const {title, numOfCards} = this.props
 
     return (
       <View style={styles.deck}>
-        <Text style={{fontSize: 30}}>{deckTitle}</Text>
-        <Text style={{fontSize: 20, color: 'gray'}}>cards: {numOfQuestions}</Text>
+        <Text style={{fontSize: 30}}>{title}</Text>
+        <Text style={{fontSize: 20, color: 'gray'}}>cards: {numOfCards}</Text>
       </View>
     )
   }
@@ -26,4 +26,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default DeckView
+export default Deck
