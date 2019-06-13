@@ -1,6 +1,6 @@
 import React from 'react'
 import {Text, StyleSheet, KeyboardAvoidingView} from 'react-native'
-import {Input} from 'react-native-elements'
+import {Input, Button} from 'react-native-elements'
 import {connect} from 'react-redux'
 import {addDeck} from '../actions'
 
@@ -8,7 +8,7 @@ import {addDeck} from '../actions'
 class AddDeck extends React.Component {
   onSubmit = () => {
     const {dispatch, navigation} = this.props
-    const title = this.textInput._lastNativeText
+    const title = this.textInput.input._lastNativeText
 
     if (title !== undefined && title.trim() !== '') {
       dispatch(addDeck({
@@ -32,7 +32,11 @@ class AddDeck extends React.Component {
           containerStyle={{width: 250}}
           placeholder='Type a new title for the deck'
           ref={input => this.textInput = input}
-          onSubmitEditing={this.onSubmit}
+        />
+        <Button
+          buttonStyle={styles.submitBtn}
+          title='Submit'
+          onPress={this.onSubmit}
         />
       </KeyboardAvoidingView>
     )
@@ -44,6 +48,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  submitBtn: {
+    marginTop: 50
   }
 })
 

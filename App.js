@@ -14,6 +14,7 @@ import DeckList from './components/DeckList'
 import DeckMenu from './components/DeckMenu'
 import Quiz from './components/Quiz'
 import QuizSummary from './components/QuizSummary'
+import {setLocalNotification} from './utils/helpers'
 
 
 const CardsStatusBar = ({backgroundColor, ...props}) => {
@@ -72,15 +73,21 @@ const AppContainer = createAppContainer(MainNavigator)
 
 const store = createStore(decks, applyMiddleware(thunk, logger))
 
-const App = () => {
-  return (
-    <Provider store={store}>
-      <View style={styles}>
-        <CardsStatusBar barStyle='light-content'/>
-        <AppContainer/>
-      </View>
-    </Provider>
-  );
+class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
+
+  render() {
+    return (
+      <Provider store={store}>
+        <View style={styles}>
+          <CardsStatusBar barStyle='light-content'/>
+          <AppContainer/>
+        </View>
+      </Provider>
+    )
+  }
 }
 
 const styles = StyleSheet.create({

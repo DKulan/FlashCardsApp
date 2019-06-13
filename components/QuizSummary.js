@@ -1,9 +1,15 @@
 import React from 'react'
 import {Text, View, StyleSheet} from 'react-native'
 import {Button} from 'react-native-elements'
+import {setLocalNotification, clearLocalNotification} from '../utils/helpers'
 
 
 class QuizSummary extends React.Component {
+  componentDidMount() {
+    clearLocalNotification()
+      .then(setLocalNotification())
+  }
+
   handleResetButton = () => {
     const {navigation} = this.props
 
