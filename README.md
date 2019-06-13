@@ -2,7 +2,7 @@
 
 _FlashCardsApp is the 3rd and final project to complete Udacity's React Nanodegree program._
 
-FlashCardsApp allows users to create flash cards to aid in studying whatever topic they are trying to grasp. The app allows users to create a deck which represents the general topic, and add cards that contain a question and answer for that deck.
+FlashCardsApp allows users to create flash cards to aid in studying regardless of the topic they are trying to grasp. The app allows users to create a deck which represents the general topic, and add cards that contain a question and answer for that deck.
 
 _for example_: 
 
